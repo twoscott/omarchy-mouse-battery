@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "io.github.twoscott.mouse-battery",
+  "name": "Mouse Battery",
+  "version": "1.0.0",
+  "author": "twoscott",
+  "license": "MIT",
+  "description": "Wireless mouse battery glyph with a detail panel",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "Mouse Battery",
+    "description": "Battery glyph for a wireless mouse, with a panel showing the exact percentage, charge state, and how long ago the device last reported.",
+    "category": "System",
+    "allowMultiple": true,
+    "defaultSection": "right",
+    "defaults": {
+      "match": "",
+      "lowThreshold": 20,
+      "showPercentage": false,
+      "hideWhenAbsent": true
+    },
+    "schema": [
+      {
+        "key": "match",
+        "type": "string",
+        "label": "Device match",
+        "defaultValue": "",
+        "description": "Case-insensitive substring matched against the UPower model and kernel path, e.g. \"g pro\" or \"hidpp_battery_1\". Leave empty to auto-detect. Set this when auto-detection picks nothing or picks the wrong device — run `upower -e` and `upower -i <path>` to see what your mouse reports."
+      },
+      {
+        "key": "lowThreshold",
+        "type": "integer",
+        "label": "Low battery threshold (%)",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "defaultValue": 15,
+        "description": "At or below this percentage the bar glyph and the panel reading switch to the theme's urgent colour."
+      },
+      {
+        "key": "showPercentage",
+        "type": "boolean",
+        "label": "Show percentage in the bar",
+        "defaultValue": false,
+        "description": "Off by default so the bar stays icon-only. Right-click the widget to toggle."
+      },
+      {
+        "key": "hideWhenAbsent",
+        "type": "boolean",
+        "label": "Hide when the mouse is off",
+        "defaultValue": false,
+        "description": "UPower drops the device when the mouse is switched off. Off keeps a dimmed slot in place instead of collapsing the bar — also the way to tell \"mouse is off\" apart from \"no matching device was ever found\"."
+      }
+    ]
+  }
+}
