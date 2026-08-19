@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "io.github.twoscott.mouse-battery",
-  "name": "Mouse Battery",
+  "name": "Mouse Battery Indicator",
   "version": "1.0.0",
   "author": "twoscott",
   "license": "MIT",
