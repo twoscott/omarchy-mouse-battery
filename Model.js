@@ -359,11 +359,27 @@ function updatedAgo(value) {
   return text.substring(open + 1, close).trim()
 }
 
+// Panel.qml renders its own strings as PlainText, but the bar tooltip is drawn
+// by the shell's PanelToolTip, whose Text is left at the default AutoText — so
+// a model string of `<img src="http://host/x.png">` would still reach a
+// rich-text parser through that one sink, which this plugin cannot pin from
+// here. Strip the characters that can open markup (`<` for a tag, `&` for an
+// entity — either is enough for mightBeRichText to say yes — and `>` with
+// them so no half-tag is left behind) and fold the whitespace, which also
+// keeps a device from spilling the tooltip over several lines with a newline
+// in its name. No real mouse's model string contains any of them.
+function plainText(value) {
+  return String(value === undefined || value === null ? "" : value)
+    .replace(/[<>&]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+}
+
 function shortDeviceName(device) {
   var d = device || {}
-  var model = String(d.model || "").trim()
+  var model = plainText(d.model)
   if (model) return model
-  var native = String(d.nativePath || "").trim()
+  var native = plainText(d.nativePath)
   return native || "Wireless mouse"
 }
 
@@ -386,6 +402,7 @@ if (typeof module !== "undefined") {
     estimateSecondsRemaining: estimateSecondsRemaining,
     parseUpowerInfo: parseUpowerInfo,
     updatedAgo: updatedAgo,
+    plainText: plainText,
     shortDeviceName: shortDeviceName
   }
 }

@@ -15,6 +15,16 @@ import "Model.js" as Model
 //
 // The bar shows the glyph alone: its ten fill levels are the approximate
 // reading. The exact percentage lives in the panel.
+//
+// Every Text below pins `textFormat: Text.PlainText`. The strings on show are
+// the device's own — a peripheral picks the model string UPower reports, and
+// the serial with it — and Text's default AutoText hands anything that looks
+// like markup to the rich-text parser, which resolves `<img src=...>` by
+// fetching it. That would let a mouse decide what this long-lived shell
+// process loads, from the network or off disk, and it does not wait for the
+// panel to be opened: the panel's children are built eagerly, and a Text lays
+// out (and so fetches) while invisible. PlainText makes it structurally
+// impossible rather than filtered.
 Panel {
   id: root
   moduleName: "io.github.twoscott.mouse-battery"
@@ -291,6 +301,7 @@ Panel {
       }
 
       Text {
+        textFormat: Text.PlainText
         anchors.verticalCenter: parent.verticalCenter
         visible: root.percentText !== ""
         text: root.percentText
@@ -339,6 +350,7 @@ Panel {
 
           Text {
             id: heroIcon
+            textFormat: Text.PlainText
             text: "󰍽"
             color: root.bar.foreground
             font.family: root.bar.fontFamily
@@ -357,6 +369,7 @@ Panel {
             spacing: Style.space(2)
 
             Text {
+              textFormat: Text.PlainText
               text: root.deviceName
               color: root.bar.foreground
               font.family: root.bar.fontFamily
@@ -367,6 +380,7 @@ Panel {
             }
 
             Text {
+              textFormat: Text.PlainText
               text: root.statusText.toUpperCase()
               color: Qt.darker(root.bar.foreground, 1.4)
               font.family: root.bar.fontFamily
@@ -381,6 +395,7 @@ Panel {
           // The exact reading the bar glyph only approximates.
           Text {
             id: heroPercent
+            textFormat: Text.PlainText
             text: root.hasDevice ? root.batteryPercent + "%" : "—"
             color: root.accentColor
             font.family: root.bar.fontFamily
@@ -469,6 +484,7 @@ Panel {
   }
 
   component InfoLabel: Text {
+    textFormat: Text.PlainText
     color: root.bar.foreground
     opacity: 0.6
     font.family: root.bar.fontFamily
@@ -476,6 +492,7 @@ Panel {
   }
 
   component InfoValue: Text {
+    textFormat: Text.PlainText
     color: root.bar.foreground
     font.family: root.bar.fontFamily
     font.pixelSize: Style.font.bodySmall
